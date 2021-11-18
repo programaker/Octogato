@@ -24,6 +24,10 @@ lazy val root = project.in(file("."))
       CirceParser,
       CirceRefined,
 
+      SttpCore,
+      SttpCatsBackend,
+      SttpCirce,
+
       Mouse,
       Refined,
       OdinCore

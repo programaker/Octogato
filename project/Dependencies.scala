@@ -9,6 +9,10 @@ object Dependencies {
   val CirceParser = "io.circe" %% "circe-parser" % Versions.CirceCore
   val CirceRefined = "io.circe" %% "circe-refined" % Versions.CirceCore
 
+  val SttpCore = "com.softwaremill.sttp.client3" %% "core" % Versions.SttpCore
+  val SttpCatsBackend = "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % Versions.SttpCore
+  val SttpCirce = "com.softwaremill.sttp.client3" %% "circe" % Versions.SttpCore
+
   val Mouse = "org.typelevel" %% "mouse" % Versions.Mouse
   val Refined = "eu.timepit" %% "refined" % Versions.Refined
   val OdinCore = "com.github.valskalla" %% "odin-core" % Versions.OdinCore
@@ -21,4 +25,5 @@ private object Versions {
   val Mouse = "1.0.7"
   val Refined = "0.9.27"
   val OdinCore = "0.13.0"
+  val SttpCore = "3.3.16"
 }
