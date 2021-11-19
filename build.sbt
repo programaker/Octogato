@@ -33,8 +33,8 @@ lazy val root = project.in(file("."))
       OdinCore
     ),
 
-    // https://scalacenter.github.io/scala-3-migration-guide/docs/compiler-options/compiler-options-table.html
-    // https://scalacenter.github.io/scala-3-migration-guide/docs/compiler-options/new-compiler-options.html
+    // https://docs.scala-lang.org/scala3/guides/migration/options-lookup.html
+    // https://docs.scala-lang.org/scala3/guides/migration/options-new.html
     scalacOptions ++= Seq(
       "-encoding", "utf8",
       "-deprecation",

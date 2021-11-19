@@ -12,10 +12,10 @@ case class ListRepositoryLabelsRequest(
   page: Option[Page]
 )
 object ListRepositoryLabelsRequest:
-  def make(owner: NonBlankString, repo: NonBlankString): ListRepositoryLabelsRequest =
+  def make(labelPath: LabelPath): ListRepositoryLabelsRequest =
     ListRepositoryLabelsRequest(
       accept = GithubHeaders.Accept,
       per_page = refineU[PerPageP](30).some,
       page = refineU[PageP](1).some,
-      labelPath = LabelPath(owner, repo)
+      labelPath = labelPath
     )
