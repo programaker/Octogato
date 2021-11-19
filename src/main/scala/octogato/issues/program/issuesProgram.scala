@@ -12,7 +12,7 @@ import cats.syntax.parallel.*
 import cats.syntax.traverse.*
 import octogato.common.NonBlankStringP
 import octogato.common.RefinementError
-import octogato.common.refineE
+import octogato.common.refineNec
 import octogato.issues.LabelColorP
 
 def copyIssueLabels[F[_]: IssuesService: Monad: Parallel](
@@ -20,9 +20,9 @@ def copyIssueLabels[F[_]: IssuesService: Monad: Parallel](
   target: LabelPath
 ): F[List[ValidatedNec[RefinementError, LabelResponse]]] =
   val copyIssueLabel = (label: LabelResponse) =>
-    val name = refineE[NonBlankStringP](label.name).toValidatedNec
-    val color = refineE[LabelColorP](label.color).toValidatedNec
-    val description = refineE[NonBlankStringP](label.description).toValidatedNec
+    val name = refineNec[NonBlankStringP](label.name)
+    val color = refineNec[LabelColorP](label.color)
+    val description = refineNec[NonBlankStringP](label.description)
     val createReqFn = CreateLabelRequest.withLabelPath(target)
     (name, color, description).mapN(createReqFn).traverse(IssuesService[F].createLabel)
 
