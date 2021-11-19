@@ -1,6 +1,6 @@
 package octogato.issues
 
-final case class LabelResponse(
+case class LabelResponse(
   id: Long,
   node_id: String,
   url: String,
