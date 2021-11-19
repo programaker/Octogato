@@ -2,6 +2,7 @@ package octogato.issues
 
 import eu.timepit.refined.refineV
 import cats.syntax.option.*
+import octogato.common.GithubHeaders
 
 final case class ListRepositoryLabelsRequest(
   accept: String,
@@ -12,7 +13,7 @@ final case class ListRepositoryLabelsRequest(
 object ListRepositoryLabelsRequest:
   def make(owner: String, repo: String): ListRepositoryLabelsRequest =
     ListRepositoryLabelsRequest(
-      accept = "application/vnd.github.v3+json",
+      accept = GithubHeaders.Accept,
       per_page = refineV[PerPageP].unsafeFrom(30).some,
       page = refineV[PageP].unsafeFrom(1).some,
       labelPath = LabelPath(owner, repo)

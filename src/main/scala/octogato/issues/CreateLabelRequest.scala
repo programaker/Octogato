@@ -1,5 +1,7 @@
 package octogato.issues
 
+import octogato.common.GithubHeaders
+
 final case class CreateLabelRequest(
   accept: String,
   labelPath: LabelPath,
@@ -8,13 +10,13 @@ final case class CreateLabelRequest(
 object CreateLabelRequest:
   case class Body(
     name: String,
-    color: String,
+    color: Color,
     description: String
   )
 
-  def make(owner: String, repo: String, name: String, color: String, description: String): CreateLabelRequest =
+  def make(owner: String, repo: String, name: String, color: Color, description: String): CreateLabelRequest =
     CreateLabelRequest(
-      accept = "application/vnd.github.v3+json",
+      accept = GithubHeaders.Accept,
       labelPath = LabelPath(owner, repo),
       body = Body(name, color, description)
     )
