@@ -1,20 +1,21 @@
 package octogato.issues
 
-import eu.timepit.refined.refineV
 import cats.syntax.option.*
 import octogato.common.GithubHeaders
+import octogato.common.NonBlankString
+import octogato.common.refineU
 
-final case class ListRepositoryLabelsRequest(
-  accept: String,
+case class ListRepositoryLabelsRequest(
+  accept: NonBlankString,
   labelPath: LabelPath,
   per_page: Option[PerPage],
   page: Option[Page]
 )
 object ListRepositoryLabelsRequest:
-  def make(owner: String, repo: String): ListRepositoryLabelsRequest =
+  def make(owner: NonBlankString, repo: NonBlankString): ListRepositoryLabelsRequest =
     ListRepositoryLabelsRequest(
       accept = GithubHeaders.Accept,
-      per_page = refineV[PerPageP].unsafeFrom(30).some,
-      page = refineV[PageP].unsafeFrom(1).some,
+      per_page = refineU[PerPageP](30).some,
+      page = refineU[PageP](1).some,
       labelPath = LabelPath(owner, repo)
     )

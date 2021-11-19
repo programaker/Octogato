@@ -1,6 +1,8 @@
 package octogato.issues
 
-final case class LabelPath(
-  owner: String,
-  repo: String
+import octogato.common.NonBlankString
+
+case class LabelPath(
+  owner: NonBlankString,
+  repo: NonBlankString
 )

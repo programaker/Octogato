@@ -1,20 +1,27 @@
 package octogato.issues
 
 import octogato.common.GithubHeaders
+import octogato.common.NonBlankString
 
-final case class CreateLabelRequest(
-  accept: String,
+case class CreateLabelRequest(
+  accept: NonBlankString,
   labelPath: LabelPath,
   body: CreateLabelRequest.Body
 )
 object CreateLabelRequest:
   case class Body(
-    name: String,
+    name: NonBlankString,
     color: Color,
-    description: String
+    description: NonBlankString
   )
 
-  def make(owner: String, repo: String, name: String, color: Color, description: String): CreateLabelRequest =
+  def make(
+    owner: NonBlankString,
+    repo: NonBlankString,
+    name: NonBlankString,
+    color: Color,
+    description: NonBlankString
+  ): CreateLabelRequest =
     CreateLabelRequest(
       accept = GithubHeaders.Accept,
       labelPath = LabelPath(owner, repo),
