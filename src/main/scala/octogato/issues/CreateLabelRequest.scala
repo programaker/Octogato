@@ -6,6 +6,7 @@ import octogato.common.NonBlankString
 import octogato.common.NonBlankStringP
 
 case class CreateLabelRequest(
+  token: NonBlankString,
   accept: NonBlankString,
   labelPath: LabelPath,
   body: CreateLabelRequest.Body
@@ -18,6 +19,7 @@ object CreateLabelRequest:
   )
 
   def make(
+    token: NonBlankString,
     owner: Owner,
     repo: Repo,
     name: LabelName,
@@ -26,9 +28,13 @@ object CreateLabelRequest:
   ): CreateLabelRequest =
     CreateLabelRequest(
       accept = GithubHeaders.Accept,
+      token = token,
       labelPath = LabelPath(owner, repo),
       body = Body(name, color, description)
     )
 
-  def withLabelPath(labelPath: LabelPath): (LabelName, LabelColor, LabelDescription) => CreateLabelRequest =
-    make(labelPath.owner, labelPath.repo, _, _, _)
+  def withLabelPath(
+    token: NonBlankString,
+    labelPath: LabelPath
+  ): (LabelName, LabelColor, LabelDescription) => CreateLabelRequest =
+    make(token, labelPath.owner, labelPath.repo, _, _, _)

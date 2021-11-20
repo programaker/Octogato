@@ -7,6 +7,7 @@ import eu.timepit.refined.collection.{MaxSize, MinSize, Size}
 import eu.timepit.refined.boolean.And
 import eu.timepit.refined.string.HexStringSpec
 import octogato.common.StringLength
+import octogato.common.NonBlankStringP
 import octogato.common.NonBlankString
 
 type PageP = Positive
@@ -20,5 +21,9 @@ type LabelColor = String Refined LabelColorP
 
 type LabelName = NonBlankString
 type LabelDescription = NonBlankString
+
+type OwnerP = NonBlankStringP
 type Owner = NonBlankString
+
+type RepoP = NonBlankStringP
 type Repo = NonBlankString

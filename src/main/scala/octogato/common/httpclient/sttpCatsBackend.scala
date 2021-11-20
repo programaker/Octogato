@@ -5,4 +5,5 @@ import cats.effect.kernel.Resource
 import sttp.client3.SttpBackend
 import sttp.client3.asynchttpclient.cats.AsyncHttpClientCatsBackend
 
-given [F[_]: Async]: Resource[F, SttpBackend[F, Any]] = AsyncHttpClientCatsBackend.resource[F]()
+type BackendResource[F[_]] = Resource[F, SttpBackend[F, Any]]
+given [F[_]: Async]: BackendResource[F] = AsyncHttpClientCatsBackend.resource[F]()
