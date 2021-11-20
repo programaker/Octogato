@@ -28,9 +28,10 @@ lazy val root = project.in(file("."))
       SttpCatsBackend,
       SttpCirce,
 
-      Mouse,
       Refined,
-      OdinCore
+      Mouse,
+      OdinCore,
+      PureconfigCore
     ),
 
     // https://docs.scala-lang.org/scala3/guides/migration/options-lookup.html

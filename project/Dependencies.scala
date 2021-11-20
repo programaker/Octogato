@@ -13,9 +13,10 @@ object Dependencies {
   val SttpCatsBackend = "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % Versions.SttpCore
   val SttpCirce = "com.softwaremill.sttp.client3" %% "circe" % Versions.SttpCore
 
-  val Mouse = "org.typelevel" %% "mouse" % Versions.Mouse
   val Refined = "eu.timepit" %% "refined" % Versions.Refined
+  val Mouse = "org.typelevel" %% "mouse" % Versions.Mouse
   val OdinCore = "com.github.valskalla" %% "odin-core" % Versions.OdinCore
+  val PureconfigCore = "com.github.pureconfig" %% "pureconfig-core" % Versions.PureConfigCore
 }
 
 private object Versions {
@@ -26,4 +27,5 @@ private object Versions {
   val Refined = "0.9.27"
   val OdinCore = "0.13.0"
   val SttpCore = "3.3.16"
+  val PureConfigCore = "0.17.0"
 }
