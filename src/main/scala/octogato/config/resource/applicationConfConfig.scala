@@ -14,7 +14,7 @@ import java.lang.Exception
 import cats.syntax.flatMap
 
 def makeConfigService[F[_]: Sync: MonadThrow]: ConfigService[F] = new:
-  def getConfig: F[AppConfig] =
+  override def getConfig: F[AppConfig] =
     Sync[F]
       .delay(ConfigSource.default.load[AppConfig])
       .map(_.leftMap(_.prettyPrint()).leftMap(ConfigError.apply))

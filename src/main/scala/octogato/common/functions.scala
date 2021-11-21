@@ -5,7 +5,6 @@ import cats.syntax.either.*
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.api.Validate
 import eu.timepit.refined.refineV as refineV_
-import eu.timepit.refined.internal.RefinePartiallyApplied
 
 object syntax:
   extension [T](t: T)

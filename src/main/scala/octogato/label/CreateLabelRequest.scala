@@ -10,7 +10,9 @@ case class CreateLabelRequest(
   accept: NonBlankString,
   labelPath: LabelPath,
   body: CreateLabelRequest.Body
-)
+):
+  export labelPath.*
+
 object CreateLabelRequest:
   case class Body(
     name: LabelName,
