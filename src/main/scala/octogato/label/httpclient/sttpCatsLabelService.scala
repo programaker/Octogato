@@ -16,7 +16,7 @@ import sttp.client3.*
 import sttp.client3.circe.*
 import sttp.model.Header
 
-given [F[_]: Async: MonadThrow: BackendResource]: LabelService[F] with
+def makeLabelService[F[_]: Async: MonadThrow: BackendResource]: LabelService[F] = new:
   val baseUri = "https://api.github.com/repos"
 
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]] =
