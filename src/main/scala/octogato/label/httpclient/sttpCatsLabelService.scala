@@ -26,7 +26,8 @@ given [F[_]: Async: MonadThrow: BackendResource]: LabelService[F] with
         .addParam("page", req.page.map(_.show))
 
     val getReq =
-      basicRequest.auth
+      basicRequest
+        .auth
         .bearer(req.token.value)
         .header(Header.accept(req.accept.value))
         .get(getUri)
