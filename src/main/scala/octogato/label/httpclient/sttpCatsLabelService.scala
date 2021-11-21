@@ -9,14 +9,14 @@ import cats.syntax.flatMap.*
 import cats.syntax.functor.*
 import cats.syntax.show.*
 import octogato.common.given_Show_Refined
-import octogato.common.httpclient.BackendResource
+import octogato.common.httpclient.Backend
 import octogato.label.LabelService
 import octogato.label.json.given_Decoder_LabelResponse
 import sttp.client3.*
 import sttp.client3.circe.*
 import sttp.model.Header
 
-def makeLabelService[F[_]: Async: MonadThrow: BackendResource]: LabelService[F] = new:
+def makeLabelService[F[_]: Async: MonadThrow: Backend]: LabelService[F] = new:
   val baseUri = "https://api.github.com/repos"
 
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]] =
@@ -25,16 +25,13 @@ def makeLabelService[F[_]: Async: MonadThrow: BackendResource]: LabelService[F] 
         .addParam("per_page", req.per_page.map(_.show))
         .addParam("page", req.page.map(_.show))
 
-    val getReq =
-      basicRequest
-        .auth
-        .bearer(req.token.value)
-        .header(Header.accept(req.accept.value))
-        .get(getUri)
-        .response(asJson[List[LabelResponse]])
-
-    BackendResource[F]
-      .use(getReq.send)
+    basicRequest
+      .auth
+      .bearer(req.token.value)
+      .header(Header.accept(req.accept.value))
+      .get(getUri)
+      .response(asJson[List[LabelResponse]])
+      .send(Backend[F])
       .map(_.body)
       .flatMap {
         _ match
