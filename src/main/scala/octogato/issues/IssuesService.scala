@@ -5,4 +5,4 @@ trait IssuesService[F[_]]:
   def createLabel(req: CreateLabelRequest): F[LabelResponse]
 
 object IssuesService:
-  inline def apply[F[_]](using is: IssuesService[F]): IssuesService[F] = is
+  inline def apply[F[_]: IssuesService]: IssuesService[F] = summon
