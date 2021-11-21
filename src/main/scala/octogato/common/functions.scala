@@ -4,21 +4,23 @@ import cats.data.ValidatedNec
 import cats.syntax.either.*
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.api.Validate
-import eu.timepit.refined.refineV
+import eu.timepit.refined.refineV as refineV_
+import eu.timepit.refined.internal.RefinePartiallyApplied
 
-/** Refinement function that models Predicate errors as [[octogato.common.RefinementError]] */
-def refineE[P]: PartialRefineE[P] = PartialRefineE()
-final class PartialRefineE[P]:
-  def apply[T](t: T)(using v: Validate[T, P]): Either[RefinementError, Refined[T, P]] =
-    refineV[P](t).leftMap(RefinementError.apply)
+object syntax:
+  extension [T](t: T)
+    /** Syntax for the original [[eu.timepit.refined.refineV]] */
+    def refineV[P](using Validate[T, P]): Either[String, Refined[T, P]] =
+      refineV_[P](t)
 
-def refineNec[P]: PartialRefineNec[P] = PartialRefineNec()
-final class PartialRefineNec[P]:
-  def apply[T](t: T)(using v: Validate[T, P]): ValidatedNec[RefinementError, Refined[T, P]] =
-    refineE[P](t).toValidatedNec
+    /** Refinement function that models Predicate errors as [[octogato.common.RefinementError]] */
+    def refineE[P](using Validate[T, P]): Either[RefinementError, Refined[T, P]] =
+      refineV_[P](t).leftMap(RefinementError.apply)
 
-/** Unsafe refinement function; throws [[java.lang.IllegalArgumentException]] when Predicate fails */
-def refineU[P]: PartialRefineU[P] = PartialRefineU()
-final class PartialRefineU[P]:
-  def apply[T](t: T)(using v: Validate[T, P]): Refined[T, P] =
-    refineV[P].unsafeFrom(t)
+    /** Refinement function that returns [[cats.data.ValidatedNec]] */
+    def refineNec[P](using Validate[T, P]): ValidatedNec[RefinementError, Refined[T, P]] =
+      t.refineE[P].toValidatedNec
+
+    /** Unsafe refinement function; throws [[java.lang.IllegalArgumentException]] when Predicate fails */
+    def refineU[P](using Validate[T, P]): Refined[T, P] =
+      refineV_[P].unsafeFrom(t)

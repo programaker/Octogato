@@ -1,8 +1,8 @@
 package octogato.common
 
-import octogato.common.NonBlankStringP
-import octogato.common.NonBlankString
-import octogato.common.refineU
+import octogato.common.AcceptP
+import octogato.common.Accept
+import octogato.common.syntax.refineU
 
 object GithubHeaders:
-  val Accept: NonBlankString = refineU[NonBlankStringP]("application/vnd.github.v3+json")
+  val Accept: Accept = "application/vnd.github.v3+json".refineU[AcceptP]

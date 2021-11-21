@@ -3,11 +3,13 @@ package octogato.label
 import cats.syntax.option.*
 import octogato.common.GithubHeaders
 import octogato.common.NonBlankString
-import octogato.common.refineU
+import octogato.common.Token
+import octogato.common.Accept
+import octogato.common.syntax.refineU
 
 case class ListRepositoryLabelsRequest(
-  token: NonBlankString,
-  accept: NonBlankString,
+  token: Token,
+  accept: Accept,
   labelPath: LabelPath,
   per_page: Option[PerPage],
   page: Option[Page]
@@ -15,11 +17,11 @@ case class ListRepositoryLabelsRequest(
   export labelPath.*
 
 object ListRepositoryLabelsRequest:
-  def make(token: NonBlankString, labelPath: LabelPath): ListRepositoryLabelsRequest =
+  def make(token: Token, labelPath: LabelPath): ListRepositoryLabelsRequest =
     ListRepositoryLabelsRequest(
       accept = GithubHeaders.Accept,
-      per_page = refineU[PerPageP](30).some,
-      page = refineU[PageP](1).some,
+      per_page = 30.refineU[PerPageP].some,
+      page = 1.refineU[PageP].some,
       token = token,
       labelPath = labelPath
     )

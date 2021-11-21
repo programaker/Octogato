@@ -22,3 +22,6 @@ type UriString = String Refined UriStringP
 
 type TokenP = NonBlankStringP
 type Token = NonBlankString
+
+type AcceptP = NonBlankStringP
+type Accept = NonBlankString
