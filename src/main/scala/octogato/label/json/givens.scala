@@ -1,4 +1,4 @@
-package octogato.issues
+package octogato.label
 package json
 
 import io.circe.Decoder

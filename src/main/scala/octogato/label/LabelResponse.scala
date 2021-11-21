@@ -1,4 +1,4 @@
-package octogato.issues
+package octogato.label
 
 case class LabelResponse(
   id: Long,

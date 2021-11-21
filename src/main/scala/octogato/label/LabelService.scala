@@ -1,8 +1,8 @@
-package octogato.issues
+package octogato.label
 
-trait IssuesService[F[_]]:
+trait LabelService[F[_]]:
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]]
   def createLabel(req: CreateLabelRequest): F[LabelResponse]
 
-object IssuesService:
-  inline def apply[F[_]: IssuesService]: IssuesService[F] = summon
+object LabelService:
+  inline def apply[F[_]: LabelService]: LabelService[F] = summon

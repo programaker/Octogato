@@ -1,4 +1,4 @@
-package octogato.issues
+package octogato.label
 
 import eu.timepit.refined.api.Refined
 import octogato.common.GithubHeaders

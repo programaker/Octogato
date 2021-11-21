@@ -1,4 +1,4 @@
-package octogato.issues
+package octogato.label
 package httpclient
 
 import cats.syntax.show.*
@@ -6,10 +6,9 @@ import cats.syntax.flatMap.*
 import cats.syntax.functor.*
 import cats.effect.kernel.Async
 import cats.effect.kernel.Resource
-import octogato.issues.IssuesService
-import octogato.issues.json.given_Decoder_LabelResponse
+import octogato.label.LabelService
+import octogato.label.json.given_Decoder_LabelResponse
 import octogato.common.httpclient.BackendResource
-import octogato.common.httpclient.given_BackendResource_F
 import octogato.common.given_Show_Refined
 import sttp.client3.*
 import sttp.client3.circe.*
@@ -17,8 +16,7 @@ import sttp.model.Header
 import cats.Monad
 import cats.MonadThrow
 
-given [F[_]: Async: MonadThrow]: IssuesService[F] with
-  val backend = summon[BackendResource[F]]
+given [F[_]: Async: MonadThrow: BackendResource]: LabelService[F] with
   val baseUri = "https://api.github.com/repos"
 
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]] =
@@ -34,7 +32,7 @@ given [F[_]: Async: MonadThrow]: IssuesService[F] with
         .get(getUri)
         .response(asJson[List[LabelResponse]])
 
-    backend
+    BackendResource[F]
       .use(getReq.send)
       .map(_.body)
       .flatMap {

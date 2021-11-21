@@ -1,4 +1,4 @@
-package octogato.issues
+package octogato.label
 
 import cats.syntax.option.*
 import octogato.common.GithubHeaders
