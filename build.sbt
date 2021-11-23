@@ -36,14 +36,13 @@ lazy val root = project.in(file("."))
 
     // https://docs.scala-lang.org/scala3/guides/migration/options-lookup.html
     // https://docs.scala-lang.org/scala3/guides/migration/options-new.html
+    //
+    // Not using "-Yexplicit-nulls" anymore because it's causing more harm than good.
+    // It breaks circe codecs and working with Java stuff becomes painful.
     scalacOptions ++= Seq(
       "-encoding", "utf8",
       "-deprecation",
-      "-explain",
-
       "-language:strictEquality",
-
-      "-Yexplicit-nulls",
       "-Ykind-projector:underscores"
     )
   )
