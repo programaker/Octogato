@@ -8,6 +8,7 @@ import eu.timepit.refined.collection.MinSize
 import eu.timepit.refined.string.MatchesRegex
 import eu.timepit.refined.string.Trimmed
 import eu.timepit.refined.string.Uri
+import octogato.common.syntax.*
 
 // Size[N] refinement does not work for Strings,
 // but MinSize[N] and MaxSize[N] do somehow =S
@@ -25,3 +26,6 @@ type Token = NonBlankString
 
 type AcceptP = NonBlankStringP
 type Accept = NonBlankString
+object Accept:
+  /** Accept header recommended in Github Api docs */
+  val Recommended: Accept = "application/vnd.github.v3+json".refineU[AcceptP]

@@ -3,7 +3,7 @@ package octogato.label
 import eu.timepit.refined.api.Refined
 import io.circe.Codec
 import io.circe.refined.*
-import octogato.common.GithubHeaders
+import octogato.common.Accept
 import octogato.common.NonBlankString
 import octogato.common.NonBlankStringP
 
@@ -33,7 +33,7 @@ object CreateLabelRequest:
     description: LabelDescription
   ): CreateLabelRequest =
     CreateLabelRequest(
-      accept = GithubHeaders.Accept,
+      accept = Accept.Recommended,
       token = token,
       labelPath = LabelPath(owner, repo),
       body = Body(name, color, description)

@@ -1,7 +1,6 @@
 package octogato.label
 
 import cats.syntax.option.*
-import octogato.common.GithubHeaders
 import octogato.common.NonBlankString
 import octogato.common.Token
 import octogato.common.Accept
@@ -19,7 +18,7 @@ case class ListRepositoryLabelsRequest(
 object ListRepositoryLabelsRequest:
   def make(token: Token, labelPath: LabelPath): ListRepositoryLabelsRequest =
     ListRepositoryLabelsRequest(
-      accept = GithubHeaders.Accept,
+      accept = Accept.Recommended,
       per_page = 30.refineU[PerPageP].some,
       page = 1.refineU[PageP].some,
       token = token,
