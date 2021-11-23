@@ -19,7 +19,10 @@ type PerPage = Int Refined PerPageP
 type LabelColorP = StringLength[6] And HexStringSpec
 type LabelColor = String Refined LabelColorP
 
+type LabelNameP = NonBlankStringP
 type LabelName = NonBlankString
+
+type LabelDescriptionP = NonBlankStringP
 type LabelDescription = NonBlankString
 
 type OwnerP = NonBlankStringP

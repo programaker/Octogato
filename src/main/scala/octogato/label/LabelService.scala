@@ -10,14 +10,12 @@ import cats.syntax.show.*
 import octogato.common.given
 import octogato.common.http.HttpClientBackend
 import octogato.label.LabelService
-import octogato.label.json.given
 import sttp.client3.*
 import sttp.client3.circe.*
 import sttp.model.Header
 import octogato.config.ApiConfig
 import sttp.model.Uri
 import io.circe.syntax.*
-import octogato.label.json.given
 
 trait LabelService[F[_]]:
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]]

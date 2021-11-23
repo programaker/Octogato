@@ -1,5 +1,7 @@
 package octogato.label
 
+import io.circe.Codec
+
 case class LabelResponse(
   id: Long,
   node_id: String,
@@ -8,4 +10,4 @@ case class LabelResponse(
   description: String,
   color: String,
   default: Boolean
-)
+) derives Codec.AsObject
