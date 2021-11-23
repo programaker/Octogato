@@ -6,10 +6,6 @@ import eu.timepit.refined.api.Validate
 import octogato.common.syntax.*
 import pureconfig.ConfigReader
 import pureconfig.error.ExceptionThrown
-import pureconfig.error.FailureReason
-import pureconfig.generic.derivation.default.*
 
 given [T, P](using cr: ConfigReader[T], v: Validate[T, P]): ConfigReader[Refined[T, P]] =
   cr.emap(_.refineE[P].leftMap(ExceptionThrown.apply))
-
-given ConfigReader[AppConfig] = ConfigReader.derived
