@@ -8,17 +8,17 @@ import cats.effect.kernel.Resource
 import cats.syntax.flatMap.*
 import cats.syntax.functor.*
 import cats.syntax.show.*
-import octogato.common.given_Show_Refined
+import octogato.common.given
 import octogato.common.httpclient.Backend
 import octogato.label.LabelService
-import octogato.label.json.given_Decoder_LabelResponse
+import octogato.label.json.given
 import sttp.client3.*
 import sttp.client3.circe.*
 import sttp.model.Header
 import octogato.config.ApiConfig
 import sttp.model.Uri
 import io.circe.syntax.*
-import octogato.label.json.given_Encoder_Body
+import octogato.label.json.given
 
 def makeLabelService[F[_]: Async: MonadThrow: Backend](apiConfig: ApiConfig): LabelService[F] = new:
   val baseUri = show"${apiConfig.apiHost}/repos"
