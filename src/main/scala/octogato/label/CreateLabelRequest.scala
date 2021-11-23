@@ -4,14 +4,15 @@ import eu.timepit.refined.api.Refined
 import io.circe.Codec
 import io.circe.refined.*
 import octogato.common.Accept
+import octogato.common.Token
 import octogato.common.NonBlankString
 import octogato.common.NonBlankStringP
 
 import scala.util.chaining.*
 
 case class CreateLabelRequest(
-  token: NonBlankString,
-  accept: NonBlankString,
+  token: Token,
+  accept: Accept,
   labelPath: LabelPath,
   body: CreateLabelRequest.Body
 ):
@@ -25,7 +26,7 @@ object CreateLabelRequest:
   ) derives Codec.AsObject
 
   def make(
-    token: NonBlankString,
+    token: Token,
     owner: Owner,
     repo: Repo,
     name: LabelName,
@@ -40,7 +41,7 @@ object CreateLabelRequest:
     )
 
   def withLabelPath(
-    token: NonBlankString,
+    token: Token,
     labelPath: LabelPath
   ): (LabelName, LabelColor, LabelDescription) => CreateLabelRequest =
     make.curried(token)(labelPath.owner)(labelPath.repo).pipe(Function.uncurried)
