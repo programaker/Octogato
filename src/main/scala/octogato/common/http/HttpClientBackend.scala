@@ -6,6 +6,7 @@ import sttp.client3.SttpBackend
 import sttp.client3.asynchttpclient.cats.AsyncHttpClientCatsBackend
 
 type HttpClientBackend[F[_]] = SttpBackend[F, Any]
+
 object HttpClientBackend:
   inline def apply[F[_]: HttpClientBackend]: HttpClientBackend[F] = summon
 
