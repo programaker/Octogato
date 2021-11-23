@@ -38,9 +38,8 @@ def makeLabelService[F[_]: Async: MonadThrow: Backend](apiConfig: ApiConfig): La
       .send(Backend[F])
       .map(_.body)
       .flatMap {
-        _ match
-          case Left(err)  => MonadThrow[F].raiseError(err)
-          case Right(res) => MonadThrow[F].pure(res)
+        case Left(err)  => MonadThrow[F].raiseError(err)
+        case Right(res) => MonadThrow[F].pure(res)
       }
 
   override def createLabel(req: CreateLabelRequest): F[LabelResponse] =
@@ -57,9 +56,8 @@ def makeLabelService[F[_]: Async: MonadThrow: Backend](apiConfig: ApiConfig): La
       .send(Backend[F])
       .map(_.body)
       .flatMap {
-        _ match
-          case Left(err)  => MonadThrow[F].raiseError(err)
-          case Right(res) => MonadThrow[F].pure(res)
+        case Left(err)  => MonadThrow[F].raiseError(err)
+        case Right(res) => MonadThrow[F].pure(res)
       }
 
   private def labelsUri(owner: Owner, repo: Repo): Uri =
