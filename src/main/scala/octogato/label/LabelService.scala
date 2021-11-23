@@ -8,7 +8,7 @@ import cats.syntax.flatMap.*
 import cats.syntax.functor.*
 import cats.syntax.show.*
 import octogato.common.given
-import octogato.common.httpclient.Backend
+import octogato.common.http.HttpClientBackend
 import octogato.label.LabelService
 import octogato.label.json.given
 import sttp.client3.*
@@ -26,7 +26,7 @@ trait LabelService[F[_]]:
 object LabelService:
   inline def apply[F[_]: LabelService]: LabelService[F] = summon
 
-  def make[F[_]: Async: MonadThrow: Backend](apiConfig: ApiConfig): LabelService[F] = new:
+  def make[F[_]: Async: MonadThrow: HttpClientBackend](apiConfig: ApiConfig): LabelService[F] = new:
     val baseUri = show"${apiConfig.apiHost}/repos"
 
     override def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]] =
@@ -41,7 +41,7 @@ object LabelService:
         .bearer(req.token.value)
         .header(Header.accept(req.accept.value))
         .response(asJson[List[LabelResponse]])
-        .send(Backend[F])
+        .send(HttpClientBackend[F])
         .map(_.body)
         .flatMap {
           case Left(err)  => MonadThrow[F].raiseError(err)
@@ -59,7 +59,7 @@ object LabelService:
         .bearer(req.token.value)
         .header(Header.accept(req.accept.value))
         .response(asJson[LabelResponse])
-        .send(Backend[F])
+        .send(HttpClientBackend[F])
         .map(_.body)
         .flatMap {
           case Left(err)  => MonadThrow[F].raiseError(err)
