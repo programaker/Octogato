@@ -16,7 +16,6 @@ import pureconfig.ConfigReader
 // but MinSize[N] and MaxSize[N] do somehow =S
 type StringLength[N] = MinSize[N] And MaxSize[N]
 
-//type NonBlankStringP = MinSize[1] And Not[MatchesRegex["""^\s+$"""]] And Trimmed
 type NonBlankStringP = Not[MatchesRegex["""^\s*$"""]] And Trimmed
 type NonBlankString = String Refined NonBlankStringP
 
