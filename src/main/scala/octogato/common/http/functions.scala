@@ -1,14 +1,15 @@
 package octogato.common.http
 
+import cats.MonadThrow
 import cats.syntax.flatMap.*
 import cats.syntax.functor.*
-import cats.MonadThrow
+import eu.timepit.refined.auto.autoUnwrap
 import io.circe.Decoder
+import octogato.common.Accept
+import octogato.common.Token
 import sttp.client3.IsOption
 import sttp.client3.*
 import sttp.client3.circe.*
-import octogato.common.Token
-import octogato.common.Accept
 import sttp.model.Header
 
 extension [A](req: Request[A, Any])

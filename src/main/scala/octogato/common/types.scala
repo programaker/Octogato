@@ -23,19 +23,12 @@ type UriStringP = Uri
 type UriString = String Refined UriStringP
 
 type TokenP = NonBlankStringP
-opaque type Token = NonBlankString
-object Token:
-  given ConfigReader[Token] = summon[ConfigReader[NonBlankString]]
-  def apply(value: NonBlankString): Token = value
-  extension (token: Token) def value: String = value_(token)
-  private def value_(token: Token): String = token.value
+object Token extends Opaque[NonBlankString]:
+  given ConfigReader[Token] = summon[ConfigReader[NonBlankString]].map(Token.apply(_))
+type Token = Token.OpaqueType
 
 type AcceptP = NonBlankStringP
-opaque type Accept = NonBlankString
-object Accept:
+object Accept extends Opaque[NonBlankString]:
   /** Accept header recommended in Github Api docs */
-  val Recommended: Accept = "application/vnd.github.v3+json".refineU[AcceptP]
-
-  def apply(value: NonBlankString): Accept = value
-  extension (accept: Accept) def value: String = value_(accept)
-  private def value_(accept: Accept): String = accept.value
+  val Recommended: Accept = Accept("application/vnd.github.v3+json".refineU[AcceptP])
+type Accept = Accept.OpaqueType
