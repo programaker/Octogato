@@ -15,7 +15,7 @@ import io.circe.Decoder
   * type Name = Name.OpaqueType
   * }}}
   */
-trait Opaque[T]:
+transparent trait Opaque[T]:
   opaque type OpaqueType = T
 
   inline def apply(t: T): OpaqueType = t
