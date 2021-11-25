@@ -12,6 +12,7 @@ import cats.syntax.parallel.*
 import cats.syntax.show.*
 import cats.syntax.traverse.*
 import cats.syntax.validated.*
+import cats.syntax.functor.*
 import cats.syntax.applicativeError.*
 import octogato.common.RefinementError
 import octogato.common.RefinementErrors
@@ -23,12 +24,11 @@ import cats.data.Validated.Invalid
 import cats.data.Validated.Valid
 import cats.MonadThrow
 
-// : F[List[ValidatedNec[RefinementError, LabelResponse]]]
 def copyIssueLabels[F[_]: LabelService: MonadThrow: Parallel: Log](
   token: Token,
   source: LabelPath,
   target: LabelPath
-) =
+): F[CopyIssueLabelsResult] =
   val labelService = LabelService[F]
   val log = Log[F]
   val monadThrow = MonadThrow[F]
@@ -55,4 +55,7 @@ def copyIssueLabels[F[_]: LabelService: MonadThrow: Parallel: Log](
   val deleteLabelsFromTarget = (_: List[LabelResponse]).parTraverse(deleteLabelFromTarget)
   val copyLabelsFromSourceToTarget = listLabels(source).flatMap(_.parTraverse(copyLabelToTarget))
 
-  listLabels(target).flatMap(deleteLabelsFromTarget(_) &> copyLabelsFromSourceToTarget)
+  listLabels(target)
+    .flatMap(deleteLabelsFromTarget(_) &> copyLabelsFromSourceToTarget)
+    .map(_.map(_.name))
+    .map(CopyIssueLabelsResult(_, source, target))
