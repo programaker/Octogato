@@ -2,11 +2,14 @@ package octogato.common
 
 import cats.Show
 import eu.timepit.refined.api.Refined
+import pureconfig.ConfigReader
+import io.circe.Encoder
+import io.circe.Decoder
 
 /** Generates an `opaque type` with `apply` and `value` to wrap/unwrap a value in it, in addition to some basic given
   * instances.
   *
-  * ==Usage example:==
+  * Usage example:
   * {{{
   * object Name extends Opaque[String]
   * type Name = Name.OpaqueType
@@ -14,7 +17,12 @@ import eu.timepit.refined.api.Refined
   */
 trait Opaque[T]:
   opaque type OpaqueType = T
+
   inline def apply(t: T): OpaqueType = t
   extension (ot: OpaqueType) inline def value: T = ot
-  given (using CanEqual[T, T]): CanEqual[OpaqueType, OpaqueType] = CanEqual.derived
-  given (using s: Show[T]): Show[OpaqueType] = s
+
+  given (using CanEqual[T, T]): CanEqual[OpaqueType, OpaqueType] = summon
+  given (using Show[T]): Show[OpaqueType] = summon
+  given (using ConfigReader[T]): ConfigReader[OpaqueType] = summon
+  given (using Encoder[T]): Encoder[OpaqueType] = summon
+  given (using Decoder[T]): Decoder[OpaqueType] = summon

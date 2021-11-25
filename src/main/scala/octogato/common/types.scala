@@ -23,8 +23,7 @@ type UriStringP = Uri
 type UriString = String Refined UriStringP
 
 type TokenP = NonBlankStringP
-object Token extends Opaque[NonBlankString]:
-  given ConfigReader[Token] = summon[ConfigReader[NonBlankString]].map(Token.apply(_))
+object Token extends Opaque[NonBlankString]
 type Token = Token.OpaqueType
 
 type AcceptP = NonBlankStringP
