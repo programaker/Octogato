@@ -21,6 +21,7 @@ import io.circe.syntax.*
 trait LabelService[F[_]]:
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]]
   def createLabel(req: CreateLabelRequest): F[LabelResponse]
+  def deleteLabel(req: DeleteLabelRequest): F[Unit]
 
 object LabelService:
   inline def apply[F[_]: LabelService]: LabelService[F] = summon
@@ -43,6 +44,13 @@ object LabelService:
       basicRequest
         .post(postUri)
         .body(req.body.asJson)
+        .send(req.token, req.accept)
+
+    override def deleteLabel(req: DeleteLabelRequest): F[Unit] =
+      val deleteUri = labelsUri(req.owner, req.repo).addPath(show"${req.name}")
+
+      basicRequest
+        .delete(deleteUri)
         .send(req.token, req.accept)
 
     private def labelsUri(owner: Owner, repo: Repo): Uri =

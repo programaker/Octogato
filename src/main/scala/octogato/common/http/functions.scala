@@ -17,6 +17,8 @@ extension [A](req: Request[A, Any])
     token: Token,
     accept: Accept
   ): F[B] =
+    val monadThrow = MonadThrow[F]
+
     req
       .auth
       .bearer(token.value)
@@ -25,6 +27,6 @@ extension [A](req: Request[A, Any])
       .send(HttpClientBackend[F])
       .map(_.body)
       .flatMap {
-        case Left(err)  => MonadThrow[F].raiseError(err)
-        case Right(res) => MonadThrow[F].pure(res)
+        case Left(err)  => monadThrow.raiseError(err)
+        case Right(res) => monadThrow.pure(res)
       }

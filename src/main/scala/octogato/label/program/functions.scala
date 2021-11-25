@@ -16,16 +16,22 @@ import octogato.common.syntax.*
 
 def copyIssueLabels[F[_]: LabelService: Monad: Parallel](
   token: Token,
-  origin: LabelPath,
+  source: LabelPath,
   target: LabelPath
 ): F[List[ValidatedNec[RefinementError, LabelResponse]]] =
+  val labelService = LabelService[F]
   val validated = [A] => (_: A).validNec[RefinementError]
+  val listLabels = labelService.listRepositoryLabels.compose(ListRepositoryLabelsRequest.make(token, _))
 
-  val copyIssueLabel = (label: LabelResponse) =>
+  val deleteLabelFromTarget = (label: LabelResponse) =>
+    labelService.deleteLabel(DeleteLabelRequest.make(token, target, label.name))
+
+  val copyLabelToTarget = (label: LabelResponse) =>
     (validated(label.name), validated(label.color), validated(label.description))
       .mapN(CreateLabelRequest.withLabelPath(token, target))
-      .traverse(LabelService[F].createLabel)
+      .traverse(labelService.createLabel)
 
-  LabelService[F]
-    .listRepositoryLabels(ListRepositoryLabelsRequest.make(token, origin))
-    .flatMap(_.parTraverse(copyIssueLabel))
+  val deleteLabelsFromTarget = (_: List[LabelResponse]).parTraverse(deleteLabelFromTarget)
+  val copyLabelsFromSourceToTarget = listLabels(source).flatMap(_.parTraverse(copyLabelToTarget))
+
+  listLabels(target).flatMap(deleteLabelsFromTarget(_) &> copyLabelsFromSourceToTarget)
