@@ -9,24 +9,31 @@ import eu.timepit.refined.string.HexStringSpec
 import octogato.common.StringLength
 import octogato.common.NonBlankStringP
 import octogato.common.NonBlankString
+import octogato.common.Opaque
 
 type PageP = Positive
 type Page = Int Refined PageP
 
+// 100 is the maximum number of items/page accepted by Github API
 type PerPageP = Interval.Closed[1, 100]
 type PerPage = Int Refined PerPageP
 
 type LabelColorP = StringLength[6] And HexStringSpec
-type LabelColor = String Refined LabelColorP
+object LabelColor extends Opaque[String Refined LabelColorP]
+type LabelColor = LabelColor.OpaqueType
 
 type LabelNameP = NonBlankStringP
-type LabelName = NonBlankString
+object LabelName extends Opaque[NonBlankString]
+type LabelName = LabelName.OpaqueType
 
 type LabelDescriptionP = NonBlankStringP
-type LabelDescription = NonBlankString
+object LabelDescription extends Opaque[NonBlankString]
+type LabelDescription = LabelDescription.OpaqueType
 
 type OwnerP = NonBlankStringP
-type Owner = NonBlankString
+object Owner extends Opaque[NonBlankString]
+type Owner = Owner.OpaqueType
 
 type RepoP = NonBlankStringP
-type Repo = NonBlankString
+object Repo extends Opaque[NonBlankString]
+type Repo = Repo.OpaqueType
