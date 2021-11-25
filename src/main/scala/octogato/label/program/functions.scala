@@ -19,12 +19,12 @@ def copyIssueLabels[F[_]: LabelService: Monad: Parallel](
   origin: LabelPath,
   target: LabelPath
 ): F[List[ValidatedNec[RefinementError, LabelResponse]]] =
+  val validated = [A] => (_: A).validNec[RefinementError]
+
   val copyIssueLabel = (label: LabelResponse) =>
-    val name = label.name.validNec[RefinementError]
-    val color = label.color.validNec[RefinementError]
-    val description = label.description.validNec[RefinementError]
-    val createReqFn = CreateLabelRequest.withLabelPath(token, target)
-    (name, color, description).mapN(createReqFn).traverse(LabelService[F].createLabel)
+    (validated(label.name), validated(label.color), validated(label.description))
+      .mapN(CreateLabelRequest.withLabelPath(token, target))
+      .traverse(LabelService[F].createLabel)
 
   LabelService[F]
     .listRepositoryLabels(ListRepositoryLabelsRequest.make(token, origin))
