@@ -6,25 +6,32 @@ import cats.Monad
 import cats.Parallel
 import cats.data.ValidatedNec
 import cats.syntax.apply.*
+import cats.syntax.applicative.*
 import cats.syntax.flatMap.*
 import cats.syntax.parallel.*
 import cats.syntax.show.*
 import cats.syntax.traverse.*
 import cats.syntax.validated.*
+import cats.syntax.applicativeError.*
 import octogato.common.RefinementError
+import octogato.common.RefinementErrors
 import octogato.common.Token
 import octogato.common.syntax.*
 import octogato.common.given
 import octogato.log.Log
+import cats.data.Validated.Invalid
+import cats.data.Validated.Valid
+import cats.MonadThrow
 
-def copyIssueLabels[F[_]: LabelService: Monad: Parallel: Log](
+// : F[List[ValidatedNec[RefinementError, LabelResponse]]]
+def copyIssueLabels[F[_]: LabelService: MonadThrow: Parallel: Log](
   token: Token,
   source: LabelPath,
   target: LabelPath
-): F[List[ValidatedNec[RefinementError, LabelResponse]]] =
+) =
   val labelService = LabelService[F]
   val log = Log[F]
-
+  val monadThrow = MonadThrow[F]
   val validated = [A] => (_: A).validNec[RefinementError]
 
   val listLabels = (path: LabelPath) =>
@@ -40,6 +47,10 @@ def copyIssueLabels[F[_]: LabelService: Monad: Parallel: Log](
       (validated(label.name), validated(label.color), validated(label.description))
         .mapN(CreateLabelRequest.withLabelPath(token, target))
         .traverse(labelService.createLabel)
+        .flatMap {
+          case Valid(resp)     => resp.pure
+          case Invalid(errors) => RefinementErrors.nec(errors).raiseError
+        }
 
   val deleteLabelsFromTarget = (_: List[LabelResponse]).parTraverse(deleteLabelFromTarget)
   val copyLabelsFromSourceToTarget = listLabels(source).flatMap(_.parTraverse(copyLabelToTarget))
