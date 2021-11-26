@@ -28,6 +28,10 @@ lazy val root = project.in(file("."))
       SttpCatsBackend,
       SttpCirce,
 
+      Decline,
+      DeclineEffect,
+      DeclineRefined,
+
       Refined,
       Mouse,
       OdinCore,

@@ -13,6 +13,10 @@ object Dependencies {
   val SttpCatsBackend = "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % Versions.SttpCore
   val SttpCirce = "com.softwaremill.sttp.client3" %% "circe" % Versions.SttpCore
 
+  val Decline = "com.monovore" %% "decline" % Versions.Decline
+  val DeclineEffect = "com.monovore" %% "decline-effect" % Versions.Decline
+  val DeclineRefined = "com.monovore" %% "decline-refined" % Versions.Decline
+
   val Refined = "eu.timepit" %% "refined" % Versions.Refined
   val Mouse = "org.typelevel" %% "mouse" % Versions.Mouse
   val OdinCore = "com.github.valskalla" %% "odin-core" % Versions.OdinCore
@@ -28,4 +32,5 @@ private object Versions {
   val OdinCore = "0.13.0"
   val SttpCore = "3.3.16"
   val PureConfigCore = "0.17.0"
+  val Decline = "2.2.0"
 }
