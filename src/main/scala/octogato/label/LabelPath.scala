@@ -24,6 +24,6 @@ object LabelPath:
       case s"$owner/$repo" =>
         (o.read(owner), r.read(repo)).mapN(LabelPath.apply)
       case _ =>
-        s"Invalid 'owner/repo': $string".invalidNel
+        s"Invalid 'owner/repo': '$string'".invalidNel
 
     override def defaultMetavar: String = "<owner/repo>"

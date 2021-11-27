@@ -1,4 +1,4 @@
-package octogato.label.program
+package octogato.label
 
 import cats.Show
 import cats.syntax.foldable.*

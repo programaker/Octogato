@@ -9,7 +9,7 @@ import octogato.common.given
 import octogato.common.http.HttpClientBackend
 import octogato.common.Token
 import octogato.common.Accept
-import octogato.common.http.send
+import octogato.common.http.syntax.*
 import octogato.label.LabelService
 import sttp.client3.*
 import sttp.client3.circe.*
