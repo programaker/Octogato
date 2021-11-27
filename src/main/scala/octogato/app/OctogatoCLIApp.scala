@@ -2,11 +2,15 @@ package octogato.app
 
 import cats.effect.ExitCode
 import cats.effect.IO
+import cats.effect.std.Console
 import cats.syntax.apply.*
 import cats.syntax.applicative.*
+import cats.syntax.show.*
+import cats.syntax.foldable.*
 import com.monovore.decline.Opts
 import com.monovore.decline.refined.*
 import octogato.common.Token
+import octogato.common.given
 import octogato.label.LabelPath
 import octogato.label.LabelProgram
 import octogato.log.Log
@@ -16,27 +20,35 @@ import octogato.config.ConfigService
 import octogato.common.http.HttpClientBackend
 import octogato.effect.syntax.*
 import cats.effect.kernel.Resource
+import octogato.label.CopyLabelsResult
+import octogato.label.CopyLabelsError
 
 object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
   override def main: Opts[IO[ExitCode]] =
     CopyLabelsCmd.opts.map { case CopyLabelsCmd(from, to, optionToken) => copyLabels(from, to, optionToken) }
 
   def copyLabels(from: LabelPath, to: LabelPath, optionToken: Option[Token]): IO[ExitCode] =
-    val xxx = HttpClientBackend.makeResource[IO].both(Log.makeResource[IO]).use { (httpClient, log) =>
-      given HttpClientBackend[IO] = httpClient
-      given Log[IO] = log
+    val console = Console.make[IO]
+    val reportSuccess = console.println(_: CopyLabelsResult).map(_ => ExitCode.Success)
+    val reportError = console.errorln(_: CopyLabelsError).map(_ => ExitCode.Error)
 
-      for
-        appConfig <- ConfigService.make[IO].getConfig
+    HttpClientBackend
+      .makeResource[IO]
+      .both(Log.makeResource[IO])
+      .use { (httpClient, log) =>
+        given HttpClientBackend[IO] = httpClient
+        given Log[IO] = log
 
-        token = optionToken.getOrElse(appConfig.authorization.token)
-        given LabelService[IO] = LabelService.make[IO](appConfig.api)
+        for
+          appConfig <- ConfigService.make[IO].getConfig
 
-        res <- LabelProgram.copyLabels[IO](token, from, to)
-      yield res
-    }
+          token = optionToken.getOrElse(appConfig.authorization.token)
+          given LabelService[IO] = LabelService.make[IO](appConfig.api)
 
-    ???
+          res <- LabelProgram.copyLabels[IO](token, from, to)
+        yield res
+      }
+      .flatMap(_.fold(reportError, reportSuccess))
 
 // $ octogato copy-labels --from 'programaker/Joguin2' --to 'programaker/Spotification' --token <optional>
 case class CopyLabelsCmd(from: LabelPath, to: LabelPath, token: Option[Token])

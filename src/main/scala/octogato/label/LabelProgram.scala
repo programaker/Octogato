@@ -12,6 +12,7 @@ import cats.syntax.show.*
 import cats.syntax.traverse.*
 import cats.syntax.validated.*
 import cats.syntax.functor.*
+import cats.syntax.either.*
 import cats.syntax.applicativeError.*
 import octogato.common.RefinementError
 import octogato.common.RefinementErrors
@@ -28,7 +29,7 @@ object LabelProgram:
     token: Token,
     source: LabelPath,
     target: LabelPath
-  ): F[CopyLabelsResult] =
+  ): F[Either[CopyLabelsError, CopyLabelsResult]] =
     val labelService = LabelService[F]
     val log = Log[F]
     val monadThrow = MonadThrow[F]
@@ -59,3 +60,5 @@ object LabelProgram:
       .flatMap(deleteLabelsFromTarget(_) &> copyLabelsFromSourceToTarget)
       .map(_.map(_.name))
       .map(CopyLabelsResult(_, source, target))
+      .attempt
+      .map(_.leftMap(CopyLabelsError(_, source, target)))
