@@ -28,7 +28,7 @@ object LabelProgram:
     token: Token,
     source: LabelPath,
     target: LabelPath
-  ): F[CopyIssueLabelsResult] =
+  ): F[CopyLabelsResult] =
     val labelService = LabelService[F]
     val log = Log[F]
     val monadThrow = MonadThrow[F]
@@ -58,4 +58,4 @@ object LabelProgram:
     listLabels(target)
       .flatMap(deleteLabelsFromTarget(_) &> copyLabelsFromSourceToTarget)
       .map(_.map(_.name))
-      .map(CopyIssueLabelsResult(_, source, target))
+      .map(CopyLabelsResult(_, source, target))

@@ -9,8 +9,7 @@ case class RefinementError(error: String) extends Exception(error)
 object RefinementError:
   given Show[RefinementError] = Show.show(_.error)
 
-case class RefinementErrors[C[_]: Foldable](errors: C[RefinementError])
+case class RefinementErrors[F[_]: Foldable](errors: F[RefinementError])
     extends Exception(errors.mkString_("Refinement errors: \n - ", "\n - ", ""))
 object RefinementErrors:
-  def nec(errors: NonEmptyChain[RefinementError]): RefinementErrors[NonEmptyChain] =
-    RefinementErrors(errors)
+  def nec(errors: NonEmptyChain[RefinementError]): RefinementErrors[NonEmptyChain] = RefinementErrors(errors)
