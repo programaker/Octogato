@@ -1,0 +1,10 @@
+#! /bin/bash
+
+newest_image="$(docker images octogato --format '{{.ID}}' | head -n 1)"
+echo "Running image $newest_image..."
+
+docker run --rm \
+--name octogato \
+--env-file .env \
+"$newest_image" \
+"$@"
