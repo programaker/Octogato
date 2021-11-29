@@ -10,5 +10,5 @@ type HttpClientBackend[F[_]] = SttpBackend[F, Any]
 object HttpClientBackend:
   inline def apply[F[_]: HttpClientBackend]: HttpClientBackend[F] = summon
 
-  def makeResource[F[_]: Async]: Resource[F, HttpClientBackend[F]] =
+  def resource[F[_]: Async]: Resource[F, HttpClientBackend[F]] =
     AsyncHttpClientCatsBackend.resource[F]()

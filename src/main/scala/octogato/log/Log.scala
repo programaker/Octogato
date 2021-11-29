@@ -12,7 +12,7 @@ type Log[F[_]] = Logger[F]
 object Log:
   inline def apply[F[_]: Log]: Log[F] = summon
 
-  def makeResource[F[_]: Async]: Resource[F, Log[F]] =
+  def resource[F[_]: Async]: Resource[F, Log[F]] =
     consoleLogger[F](
       formatter = Formatter.colorful,
       minLevel = Level.Info

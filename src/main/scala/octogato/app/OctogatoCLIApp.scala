@@ -27,7 +27,7 @@ object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
     val reportSuccess = console.println(_: CopyLabelsResult).map(_ => ExitCode.Success)
     val reportError = console.errorln(_: CopyLabelsError).map(_ => ExitCode.Error)
 
-    (HttpClientBackend.makeResource[IO], Log.makeResource[IO])
+    (HttpClientBackend.resource[IO], Log.resource[IO])
       .tupled
       .use { (httpClient, log) =>
         given HttpClientBackend[IO] = httpClient
