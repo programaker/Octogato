@@ -57,7 +57,7 @@ object LabelProgram:
     val copyLabelsFromSourceToTarget = listLabels(source).flatMap(_.parTraverse(copyLabelToTarget))
 
     listLabels(target)
-      .flatMap(deleteLabelsFromTarget(_) &> copyLabelsFromSourceToTarget)
+      .flatMap(deleteLabelsFromTarget(_) *> copyLabelsFromSourceToTarget)
       .map(_.map(_.name))
       .map(CopyLabelsResult(_, source, target))
       .attempt
