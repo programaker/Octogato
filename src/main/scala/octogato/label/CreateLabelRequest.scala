@@ -22,7 +22,7 @@ object CreateLabelRequest:
   case class Body(
     name: LabelName,
     color: LabelColor,
-    description: LabelDescription
+    description: Option[LabelDescription]
   ) derives Codec.AsObject
 
   def make(
@@ -31,7 +31,7 @@ object CreateLabelRequest:
     repo: Repo,
     name: LabelName,
     color: LabelColor,
-    description: LabelDescription
+    description: Option[LabelDescription]
   ): CreateLabelRequest =
     CreateLabelRequest(
       accept = Accept.Recommended,
@@ -43,5 +43,5 @@ object CreateLabelRequest:
   def withLabelPath(
     token: Token,
     labelPath: LabelPath
-  ): (LabelName, LabelColor, LabelDescription) => CreateLabelRequest =
+  ): (LabelName, LabelColor, Option[LabelDescription]) => CreateLabelRequest =
     make.curried(token)(labelPath.owner)(labelPath.repo).pipe(Function.uncurried)

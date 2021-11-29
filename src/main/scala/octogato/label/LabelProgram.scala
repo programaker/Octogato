@@ -14,6 +14,7 @@ import cats.syntax.validated.*
 import cats.syntax.functor.*
 import cats.syntax.either.*
 import cats.syntax.applicativeError.*
+import cats.syntax.foldable.*
 import octogato.common.RefinementError
 import octogato.common.RefinementErrors
 import octogato.common.Token
@@ -53,7 +54,7 @@ object LabelProgram:
             case Invalid(errors) => RefinementErrors.nec(errors).raiseError
           }
 
-    val deleteLabelsFromTarget = (_: List[LabelResponse]).parTraverse(deleteLabelFromTarget)
+    val deleteLabelsFromTarget = (_: List[LabelResponse]).parTraverse_(deleteLabelFromTarget)
     val copyLabelsFromSourceToTarget = listLabels(source).flatMap(_.parTraverse(copyLabelToTarget))
 
     listLabels(target)

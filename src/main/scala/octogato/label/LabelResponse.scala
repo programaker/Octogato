@@ -9,7 +9,7 @@ case class LabelResponse(
   node_id: String,
   url: UriString,
   name: LabelName,
-  description: LabelDescription,
+  description: Option[LabelDescription],
   color: LabelColor,
   default: Boolean
 ) derives Codec.AsObject
