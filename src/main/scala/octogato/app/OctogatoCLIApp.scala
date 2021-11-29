@@ -20,7 +20,7 @@ import octogato.label.CopyLabelsError
 
 object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
   override def main: Opts[IO[ExitCode]] =
-    CopyLabelsCmd.opts.map { case CopyLabelsCmd(from, to, optionToken) => copyLabels(from, to, optionToken) }
+    CopyLabelsCommand.opts.map { case CopyLabelsCommand(from, to, optionToken) => copyLabels(from, to, optionToken) }
 
   def copyLabels(from: LabelPath, to: LabelPath, optionToken: Option[Token]): IO[ExitCode] =
     val console = Console.make[IO]

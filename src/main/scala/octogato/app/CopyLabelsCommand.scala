@@ -7,9 +7,9 @@ import com.monovore.decline.Opts
 import com.monovore.decline.refined.*
 
 // $ octogato copy-labels --from 'programaker/Joguin2' --to 'programaker/Spotification' --token <optional>
-case class CopyLabelsCmd(from: LabelPath, to: LabelPath, token: Option[Token])
-object CopyLabelsCmd:
-  val opts: Opts[CopyLabelsCmd] =
+case class CopyLabelsCommand(from: LabelPath, to: LabelPath, token: Option[Token])
+object CopyLabelsCommand:
+  val opts: Opts[CopyLabelsCommand] =
     Opts.subcommand("copy-labels", "Copy issue labels from one repository to another") {
       (
         Opts.option[LabelPath](
@@ -29,5 +29,5 @@ object CopyLabelsCmd:
             metavar = "owner/repo"
           )
           .orNone
-      ).mapN(CopyLabelsCmd.apply)
+      ).mapN(CopyLabelsCommand.apply)
     }
