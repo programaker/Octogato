@@ -1,11 +1,13 @@
 package octogato.app
 
 import cats.syntax.apply.*
+import cats.syntax.functor.*
 import cats.effect.ExitCode
 import cats.effect.IO
 import cats.effect.std.Console
 import com.monovore.decline.Opts
 import octogato.common.Token
+import octogato.common.ApiHost
 import octogato.common.given
 import octogato.label.LabelPath
 import octogato.label.LabelProgram
@@ -17,29 +19,36 @@ import octogato.common.http.HttpClientBackend
 import cats.effect.kernel.Resource
 import octogato.label.CopyLabelsResult
 import octogato.label.CopyLabelsError
+import cats.Show
+import cats.Functor
 
 object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
   override def main: Opts[IO[ExitCode]] =
-    CopyLabelsCommand.opts.map { case CopyLabelsCommand(from, to, optionToken) => copyLabels(from, to, optionToken) }
+    CopyLabelsCommand.opts.map { command =>
+      (HttpClientBackend.resource[IO], Log.resource[IO])
+        .tupled
+        .use { (httpClient, log) =>
+          given HttpClientBackend[IO] = httpClient
+          given Log[IO] = log
 
-  def copyLabels(from: LabelPath, to: LabelPath, optionToken: Option[Token]): IO[ExitCode] =
-    val console = Console.make[IO]
-    val reportSuccess = console.println(_: CopyLabelsResult).map(_ => ExitCode.Success)
-    val reportError = console.errorln(_: CopyLabelsError).map(_ => ExitCode.Error)
+          for
+            appConfig <- ConfigService.make[IO].getConfig
+            apiHost = appConfig.api.apiHost
+            tokenFn = (optionToken: Option[Token]) => optionToken.getOrElse(appConfig.authorization.token)
 
-    (HttpClientBackend.resource[IO], Log.resource[IO])
-      .tupled
-      .use { (httpClient, log) =>
-        given HttpClientBackend[IO] = httpClient
-        given Log[IO] = log
+            res <- command match
+              case CopyLabelsCommand(from, to, optionToken) => copyLabels(from, to, tokenFn(optionToken), apiHost)
+          yield res
+        }
+        .flatMap(_.fold(report(ExitCode.Error), report(ExitCode.Success)))
+    }
 
-        for
-          appConfig <- ConfigService.make[IO].getConfig
+  def report[A: Show](exitCode: ExitCode)(a: A): IO[ExitCode] =
+    Console[IO].println(a).map(_ => exitCode)
 
-          token = optionToken.getOrElse(appConfig.authorization.token)
-          given LabelService[IO] = LabelService.make[IO](appConfig.api.apiHost)
-
-          res <- LabelProgram.copyLabels[IO](token, from, to)
-        yield res
-      }
-      .flatMap(_.fold(reportError, reportSuccess))
+  def copyLabels(from: LabelPath, to: LabelPath, token: Token, apiHost: ApiHost)(using
+    HttpClientBackend[IO],
+    Log[IO]
+  ): IO[Either[CopyLabelsError, CopyLabelsResult]] =
+    given LabelService[IO] = LabelService.make[IO](apiHost)
+    LabelProgram.copyLabels[IO](token, from, to)
