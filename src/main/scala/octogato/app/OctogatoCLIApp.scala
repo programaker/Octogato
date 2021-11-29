@@ -44,7 +44,7 @@ object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
     }
 
   def report[A: Show](exitCode: ExitCode)(a: A): IO[ExitCode] =
-    Console[IO].println(a).map(_ => exitCode)
+    Console[IO].println(a).as(exitCode)
 
   def copyLabels(from: LabelPath, to: LabelPath, token: Token, apiHost: ApiHost)(using
     HttpClientBackend[IO],

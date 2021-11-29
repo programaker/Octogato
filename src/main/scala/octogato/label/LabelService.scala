@@ -18,6 +18,7 @@ import sttp.model.Header
 import octogato.config.ApiConfig
 import sttp.model.Uri
 import io.circe.syntax.*
+import eu.timepit.refined.auto.autoUnwrap
 
 trait LabelService[F[_]]:
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]]
@@ -50,7 +51,11 @@ object LabelService:
 
       basicRequest
         .delete(deleteUri)
-        .send(req.token, req.accept)
+        .auth
+        .bearer(req.token.value)
+        .header(Header.accept(req.accept.value))
+        .send(HttpClientBackend[F])
+        .as(())
 
     private def labelsUri(labelPath: LabelPath): Uri =
       uri"""${show"$apiHost/repos/$labelPath/labels"}"""
