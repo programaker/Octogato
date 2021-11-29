@@ -2,6 +2,7 @@ import Dependencies._
 
 val Octogato = "0.1.0"
 val Scala = "3.1.0"
+val DockerImage = "bellsoft/liberica-openjre-alpine:17.0.1"
 
 lazy val root = project.in(file("."))
   .settings(
@@ -48,5 +49,13 @@ lazy val root = project.in(file("."))
       "-deprecation",
       "-language:strictEquality",
       "-Ykind-projector:underscores"
-    )
+    ),
+
+    Compile / mainClass := Some("octogato.app.OctogatoCLIApp"),
+    dockerBaseImage := DockerImage
+  )
+  .enablePlugins(
+    JavaAppPackaging,
+    DockerPlugin,
+    AshScriptPlugin
   )
