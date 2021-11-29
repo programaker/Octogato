@@ -61,4 +61,8 @@ object LabelProgram:
       .map(_.map(_.name))
       .map(CopyLabelsResult(_, source, target))
       .attempt
+      .flatTap {
+        case Right(_) => ().pure
+        case Left(e)  => log.error(e.getMessage, e)
+      }
       .map(_.leftMap(CopyLabelsError(_, source, target)))
