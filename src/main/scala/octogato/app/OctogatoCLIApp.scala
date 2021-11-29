@@ -37,7 +37,7 @@ object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
           appConfig <- ConfigService.make[IO].getConfig
 
           token = optionToken.getOrElse(appConfig.authorization.token)
-          given LabelService[IO] = LabelService.make[IO](appConfig.api)
+          given LabelService[IO] = LabelService.make[IO](appConfig.api.apiHost)
 
           res <- LabelProgram.copyLabels[IO](token, from, to)
         yield res

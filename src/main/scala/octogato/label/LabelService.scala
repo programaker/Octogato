@@ -9,6 +9,7 @@ import octogato.common.given
 import octogato.common.http.HttpClientBackend
 import octogato.common.Token
 import octogato.common.Accept
+import octogato.common.ApiHost
 import octogato.common.http.syntax.*
 import octogato.label.LabelService
 import sttp.client3.*
@@ -26,11 +27,9 @@ trait LabelService[F[_]]:
 object LabelService:
   inline def apply[F[_]: LabelService]: LabelService[F] = summon
 
-  def make[F[_]: MonadThrow: HttpClientBackend](apiConfig: ApiConfig): LabelService[F] = new:
-    val baseUri = show"${apiConfig.apiHost}/repos"
-
+  def make[F[_]: MonadThrow: HttpClientBackend](apiHost: ApiHost): LabelService[F] = new:
     override def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]] =
-      val getUri = labelsUri(req.owner, req.repo)
+      val getUri = labelsUri(req.labelPath)
         .addParam("per_page", req.per_page.map(_.show))
         .addParam("page", req.page.map(_.show))
 
@@ -39,7 +38,7 @@ object LabelService:
         .send(req.token, req.accept)
 
     override def createLabel(req: CreateLabelRequest): F[LabelResponse] =
-      val postUri = labelsUri(req.owner, req.repo)
+      val postUri = labelsUri(req.labelPath)
 
       basicRequest
         .post(postUri)
@@ -47,11 +46,11 @@ object LabelService:
         .send(req.token, req.accept)
 
     override def deleteLabel(req: DeleteLabelRequest): F[Unit] =
-      val deleteUri = labelsUri(req.owner, req.repo).addPath(show"${req.name}")
+      val deleteUri = labelsUri(req.labelPath).addPath(show"${req.name}")
 
       basicRequest
         .delete(deleteUri)
         .send(req.token, req.accept)
 
-    private def labelsUri(owner: Owner, repo: Repo): Uri =
-      uri"""${show"$baseUri/$owner/$repo/labels"}"""
+    private def labelsUri(labelPath: LabelPath): Uri =
+      uri"""${show"$apiHost/repos/$labelPath/labels"}"""

@@ -22,6 +22,9 @@ type NonBlankString = String Refined NonBlankStringP
 type UriStringP = Uri
 type UriString = String Refined UriStringP
 
+object ApiHost extends Opaque[UriString]
+type ApiHost = ApiHost.OpaqueType
+
 type TokenP = NonBlankStringP
 object Token extends Opaque[NonBlankString]
 type Token = Token.OpaqueType
