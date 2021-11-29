@@ -21,6 +21,7 @@ object Dependencies {
   val Mouse = "org.typelevel" %% "mouse" % Versions.Mouse
   val OdinCore = "com.github.valskalla" %% "odin-core" % Versions.OdinCore
   val PureconfigCore = "com.github.pureconfig" %% "pureconfig-core" % Versions.PureConfigCore
+  val LogbackClassic = "ch.qos.logback" % "logback-classic" % Versions.Logback
 }
 
 private object Versions {
@@ -33,4 +34,5 @@ private object Versions {
   val SttpCore = "3.3.17"
   val PureConfigCore = "0.17.1"
   val Decline = "2.2.0"
+  val Logback = "1.2.7"
 }

@@ -36,7 +36,8 @@ lazy val root = project.in(file("."))
       Refined,
       Mouse,
       OdinCore,
-      PureconfigCore
+      PureconfigCore,
+      LogbackClassic
     ),
 
     // https://docs.scala-lang.org/scala3/guides/migration/options-lookup.html
