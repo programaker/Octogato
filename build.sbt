@@ -1,6 +1,10 @@
 import Dependencies._
 
-val Octogato = "0.1.0"
+// 0.0.0
+// | | |_ bugfixes, small improvements
+// | |___ non-api changes
+// | ____ api changes
+val Octogato = "1.0.0"
 val Scala = "3.1.0"
 val DockerImage = "bellsoft/liberica-openjre-alpine:17.0.1"
 
@@ -8,11 +12,6 @@ lazy val root = project.in(file("."))
   .settings(
     organization := "com.github.programaker",
     name := "Octogato",
-    //
-    // 0.0.0
-    // | | |_ bugfixes, small improvements
-    // | |___ non-api changes
-    // | ____ api changes
     version := Octogato,
     scalaVersion := Scala,
 
