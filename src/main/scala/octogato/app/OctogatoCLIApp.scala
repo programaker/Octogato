@@ -49,13 +49,8 @@ object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
     }
 
   def chooseToken(commandToken: Option[Token], configToken: Option[Token]): Either[TokenError, Token] =
-    commandToken
-      .orElse(configToken)
-      .toRight(
-        TokenError(
-          "Github token is missing. Provide it either via --token argument or through the GITHUB_TOKEN env var"
-        )
-      )
+    val msg = "Github token is missing. Provide it either via --token argument or through the GITHUB_TOKEN env var"
+    commandToken.orElse(configToken).toRight(TokenError(msg))
 
   def showResult[A: Show](a: A): IO[ExitCode] =
     Console[IO].println(a).as(ExitCode.Success)
