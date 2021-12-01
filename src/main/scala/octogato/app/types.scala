@@ -9,11 +9,11 @@ import octogato.common.Token
 opaque type CommandResult = String
 object CommandResult:
   inline def make[T: Show](t: T): CommandResult = t.show
-  given Show[CommandResult] = summon[Show[String]]
+  given (using Show[String]): Show[CommandResult] = summon
 
 opaque type CommandError = String
 object CommandError:
   inline def make[E <: Throwable](e: E): CommandError = e.getMessage
-  given Show[CommandError] = summon[Show[String]]
+  given (using Show[String]): Show[CommandError] = summon
 
 type CommandFn = (ApiHost, Token) => IO[Either[CommandError, CommandResult]]
