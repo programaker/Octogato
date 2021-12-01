@@ -15,5 +15,5 @@ case class ApiConfig(
 )
 
 case class AuthorizationConfig(
-  token: Token
+  token: Option[Token]
 )

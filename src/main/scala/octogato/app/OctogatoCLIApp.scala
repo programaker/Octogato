@@ -2,12 +2,15 @@ package octogato.app
 
 import cats.syntax.apply.*
 import cats.syntax.functor.*
+import cats.syntax.traverse.*
+import cats.syntax.bifunctor.*
 import cats.effect.ExitCode
 import cats.effect.IO
 import cats.effect.std.Console
 import com.monovore.decline.Opts
 import octogato.common.Token
 import octogato.common.ApiHost
+import octogato.common.TokenError
 import octogato.common.given
 import octogato.label.LabelPath
 import octogato.label.LabelProgram
@@ -34,21 +37,27 @@ object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
           for
             appConfig <- ConfigService.make[IO].getConfig
             apiHost = appConfig.api.apiHost
-            tokenFn = (optionToken: Option[Token]) => optionToken.getOrElse(appConfig.authorization.token)
+            configToken = appConfig.authorization.token
 
-            res <- command match
-              case CopyLabelsCommand(from, to, optionToken) => copyLabels(from, to, tokenFn(optionToken), apiHost)
+            (commandToken, commandFn) = command match
+              case CopyLabelsCommand(from, to, optionToken) => (optionToken, copyLabels(from, to))
+
+            token = chooseToken(commandToken, configToken)
+            res <- token.leftMap(CommandError.make(_)).flatTraverse(commandFn(apiHost, _))
           yield res
         }
         .flatMap(_.fold(report(ExitCode.Error), report(ExitCode.Success)))
     }
 
+  def chooseToken(commandToken: Option[Token], configToken: Option[Token]): Either[TokenError, Token] =
+    commandToken.orElse(configToken).toRight(TokenError("Github token is missing"))
+
   def report[A: Show](exitCode: ExitCode)(a: A): IO[ExitCode] =
     Console[IO].println(a).as(exitCode)
 
-  def copyLabels(from: LabelPath, to: LabelPath, token: Token, apiHost: ApiHost)(using
+  def copyLabels(from: LabelPath, to: LabelPath)(using
     HttpClientBackend[IO],
     Log[IO]
-  ): IO[Either[CopyLabelsError, CopyLabelsResult]] =
+  ): CommandFn = (apiHost, token) =>
     given LabelService[IO] = LabelService.make[IO](apiHost)
-    LabelProgram.copyLabels[IO](token, from, to)
+    LabelProgram.copyLabels[IO](token, from, to).map(_.bimap(CommandError.make(_), CommandResult.make(_)))
