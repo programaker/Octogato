@@ -43,16 +43,25 @@ object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
             result <- chooseToken(commandToken, appConfig.authorization.token)
               .leftMap(CommandError.make(_))
               .flatTraverse(commandFn(appConfig.api.apiHost, _))
+              .flatMap(_.fold(showError, showResult))
           yield result
         }
-        .flatMap(_.fold(report(ExitCode.Error), report(ExitCode.Success)))
     }
 
   def chooseToken(commandToken: Option[Token], configToken: Option[Token]): Either[TokenError, Token] =
-    commandToken.orElse(configToken).toRight(TokenError("Github token is missing"))
+    commandToken
+      .orElse(configToken)
+      .toRight(
+        TokenError(
+          "Github token is missing. Provide it either via --token argument or through the GITHUB_TOKEN env var"
+        )
+      )
 
-  def report[A: Show](exitCode: ExitCode)(a: A): IO[ExitCode] =
-    Console[IO].println(a).as(exitCode)
+  def showResult[A: Show](a: A): IO[ExitCode] =
+    Console[IO].println(a).as(ExitCode.Success)
+
+  def showError[E: Show](e: E): IO[ExitCode] =
+    Console[IO].errorln(e).as(ExitCode.Error)
 
   def copyLabels(from: LabelPath, to: LabelPath)(using
     HttpClientBackend[IO],
