@@ -1,8 +1,8 @@
 package octogato.app
 
 import cats.Show
-import cats.syntax.show.*
 import cats.effect.IO
+import cats.syntax.show.*
 import octogato.common.ApiHost
 import octogato.common.Token
 

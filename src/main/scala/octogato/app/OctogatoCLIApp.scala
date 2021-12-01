@@ -36,15 +36,14 @@ object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
 
           for
             appConfig <- ConfigService.make[IO].getConfig
-            apiHost = appConfig.api.apiHost
-            configToken = appConfig.authorization.token
 
             (commandToken, commandFn) = command match
               case CopyLabelsCommand(from, to, optionToken) => (optionToken, copyLabels(from, to))
 
-            token = chooseToken(commandToken, configToken)
-            res <- token.leftMap(CommandError.make(_)).flatTraverse(commandFn(apiHost, _))
-          yield res
+            result <- chooseToken(commandToken, appConfig.authorization.token)
+              .leftMap(CommandError.make(_))
+              .flatTraverse(commandFn(appConfig.api.apiHost, _))
+          yield result
         }
         .flatMap(_.fold(report(ExitCode.Error), report(ExitCode.Success)))
     }
