@@ -2,28 +2,28 @@ package octogato.label
 
 import cats.Applicative
 import cats.Monad
+import cats.MonadThrow
 import cats.Parallel
+import cats.data.Validated.Invalid
+import cats.data.Validated.Valid
 import cats.data.ValidatedNec
-import cats.syntax.apply.*
 import cats.syntax.applicative.*
+import cats.syntax.applicativeError.*
+import cats.syntax.apply.*
+import cats.syntax.either.*
 import cats.syntax.flatMap.*
+import cats.syntax.foldable.*
+import cats.syntax.functor.*
 import cats.syntax.parallel.*
 import cats.syntax.show.*
 import cats.syntax.traverse.*
 import cats.syntax.validated.*
-import cats.syntax.functor.*
-import cats.syntax.either.*
-import cats.syntax.applicativeError.*
-import cats.syntax.foldable.*
+import eu.timepit.refined.cats.*
 import octogato.common.RefinementError
 import octogato.common.RefinementErrors
 import octogato.common.Token
 import octogato.common.syntax.*
-import octogato.common.given
 import octogato.log.Log
-import cats.data.Validated.Invalid
-import cats.data.Validated.Valid
-import cats.MonadThrow
 
 object LabelProgram:
   def copyLabels[F[_]: LabelService: Log: MonadThrow: Parallel](

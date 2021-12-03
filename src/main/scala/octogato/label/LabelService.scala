@@ -5,20 +5,20 @@ import cats.MonadThrow
 import cats.syntax.flatMap.*
 import cats.syntax.functor.*
 import cats.syntax.show.*
-import octogato.common.given
-import octogato.common.http.HttpClientBackend
-import octogato.common.Token
+import eu.timepit.refined.auto.autoUnwrap
+import eu.timepit.refined.cats.*
+import io.circe.syntax.*
 import octogato.common.Accept
 import octogato.common.ApiHost
+import octogato.common.Token
+import octogato.common.http.HttpClientBackend
 import octogato.common.http.syntax.*
+import octogato.config.ApiConfig
 import octogato.label.LabelService
 import sttp.client3.*
 import sttp.client3.circe.*
 import sttp.model.Header
-import octogato.config.ApiConfig
 import sttp.model.Uri
-import io.circe.syntax.*
-import eu.timepit.refined.auto.autoUnwrap
 
 trait LabelService[F[_]]:
   def listRepositoryLabels(req: ListRepositoryLabelsRequest): F[List[LabelResponse]]

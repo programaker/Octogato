@@ -4,7 +4,7 @@ import Dependencies._
 // | | |_ bugfixes, small improvements
 // | |___ non-api changes
 // | ____ api changes
-val Octogato = "1.0.0"
+val Octogato = "1.0.1"
 val Scala = "3.1.0"
 val DockerImage = "bellsoft/liberica-openjre-alpine:17.0.1"
 
@@ -33,6 +33,8 @@ lazy val root = project.in(file("."))
       DeclineRefined,
 
       Refined,
+      RefinedCats,
+
       Mouse,
       OdinCore,
       PureconfigCore,

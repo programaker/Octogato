@@ -1,29 +1,29 @@
 package octogato.app
 
-import cats.syntax.apply.*
-import cats.syntax.functor.*
-import cats.syntax.traverse.*
-import cats.syntax.bifunctor.*
+import cats.Functor
+import cats.Show
 import cats.effect.ExitCode
 import cats.effect.IO
+import cats.effect.kernel.Resource
 import cats.effect.std.Console
+import cats.syntax.apply.*
+import cats.syntax.bifunctor.*
+import cats.syntax.functor.*
+import cats.syntax.traverse.*
 import com.monovore.decline.Opts
-import octogato.common.Token
+import com.monovore.decline.effect.CommandIOApp
+import eu.timepit.refined.cats.*
 import octogato.common.ApiHost
+import octogato.common.Token
 import octogato.common.TokenError
-import octogato.common.given
+import octogato.common.http.HttpClientBackend
+import octogato.config.ConfigService
+import octogato.label.CopyLabelsError
+import octogato.label.CopyLabelsResult
 import octogato.label.LabelPath
 import octogato.label.LabelProgram
-import octogato.log.Log
-import com.monovore.decline.effect.CommandIOApp
 import octogato.label.LabelService
-import octogato.config.ConfigService
-import octogato.common.http.HttpClientBackend
-import cats.effect.kernel.Resource
-import octogato.label.CopyLabelsResult
-import octogato.label.CopyLabelsError
-import cats.Show
-import cats.Functor
+import octogato.log.Log
 
 object OctogatoCLIApp extends CommandIOApp(name = "octogato", header = ""):
   override def main: Opts[IO[ExitCode]] =

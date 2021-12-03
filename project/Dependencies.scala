@@ -18,6 +18,8 @@ object Dependencies {
   val DeclineRefined = "com.monovore" %% "decline-refined" % Versions.Decline
 
   val Refined = "eu.timepit" %% "refined" % Versions.Refined
+  val RefinedCats = "eu.timepit" %% "refined-cats" % Versions.Refined
+
   val Mouse = "org.typelevel" %% "mouse" % Versions.Mouse
   val OdinCore = "com.github.valskalla" %% "odin-core" % Versions.OdinCore
   val PureconfigCore = "com.github.pureconfig" %% "pureconfig-core" % Versions.PureConfigCore
@@ -29,9 +31,9 @@ private object Versions {
   val CatsEffect = "3.3.0"
   val CirceCore = "0.14.1"
   val Mouse = "1.0.7"
-  val Refined = "0.9.27"
+  val Refined = "0.9.28"
   val OdinCore = "0.13.0"
-  val SttpCore = "3.3.17"
+  val SttpCore = "3.3.18"
   val PureConfigCore = "0.17.1"
   val Decline = "2.2.0"
   val Logback = "1.2.7"
