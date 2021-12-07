@@ -21,6 +21,7 @@ transparent trait Opaque[T]:
 
   inline def apply(t: T): OpaqueType = t
   def unapply(ot: OpaqueType): Some[T] = Some(ot)
+  inline def wrap[F[_]](ts: F[T]): F[OpaqueType] = ts
   extension (ot: OpaqueType) inline def value: T = ot
 
   given (using CanEqual[T, T]): CanEqual[OpaqueType, OpaqueType] = summon
