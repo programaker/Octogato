@@ -1,29 +1,31 @@
 import sbt._
 
 object Dependencies {
-  val CatsCore = "org.typelevel" %% "cats-core" % Versions.CatsCore
-  val CatsEffect = "org.typelevel" %% "cats-effect" % Versions.CatsEffect
+  val libraries = Seq(
+    "org.typelevel" %% "cats-core" % Versions.CatsCore,
+    "org.typelevel" %% "cats-effect" % Versions.CatsEffect,
 
-  val CirceCore = "io.circe" %% "circe-core" % Versions.CirceCore
-  val CirceGeneric = "io.circe" %% "circe-generic" % Versions.CirceCore
-  val CirceParser = "io.circe" %% "circe-parser" % Versions.CirceCore
-  val CirceRefined = "io.circe" %% "circe-refined" % Versions.CirceCore
+    "io.circe" %% "circe-core" % Versions.CirceCore,
+    "io.circe" %% "circe-generic" % Versions.CirceCore,
+    "io.circe" %% "circe-parser" % Versions.CirceCore,
+    "io.circe" %% "circe-refined" % Versions.CirceCore,
 
-  val SttpCore = "com.softwaremill.sttp.client3" %% "core" % Versions.SttpCore
-  val SttpCatsBackend = "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % Versions.SttpCore
-  val SttpCirce = "com.softwaremill.sttp.client3" %% "circe" % Versions.SttpCore
+    "com.softwaremill.sttp.client3" %% "core" % Versions.SttpCore,
+    "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % Versions.SttpCore,
+    "com.softwaremill.sttp.client3" %% "circe" % Versions.SttpCore,
 
-  val Decline = "com.monovore" %% "decline" % Versions.Decline
-  val DeclineEffect = "com.monovore" %% "decline-effect" % Versions.Decline
-  val DeclineRefined = "com.monovore" %% "decline-refined" % Versions.Decline
+    "com.monovore" %% "decline" % Versions.Decline,
+    "com.monovore" %% "decline-effect" % Versions.Decline,
+    "com.monovore" %% "decline-refined" % Versions.Decline,
 
-  val Refined = "eu.timepit" %% "refined" % Versions.Refined
-  val RefinedCats = "eu.timepit" %% "refined-cats" % Versions.Refined
+    "eu.timepit" %% "refined" % Versions.Refined,
+    "eu.timepit" %% "refined-cats" % Versions.Refined,
 
-  val Mouse = "org.typelevel" %% "mouse" % Versions.Mouse
-  val OdinCore = "com.github.valskalla" %% "odin-core" % Versions.OdinCore
-  val PureconfigCore = "com.github.pureconfig" %% "pureconfig-core" % Versions.PureConfigCore
-  val LogbackClassic = "ch.qos.logback" % "logback-classic" % Versions.Logback
+    "org.typelevel" %% "mouse" % Versions.Mouse,
+    "com.github.valskalla" %% "odin-core" % Versions.OdinCore,
+    "com.github.pureconfig" %% "pureconfig-core" % Versions.PureConfigCore,
+    "ch.qos.logback" % "logback-classic" % Versions.Logback
+  )
 }
 
 private object Versions {

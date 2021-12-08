@@ -1,10 +1,8 @@
-import Dependencies._
-
 // 0.0.0
 // | | |_ bugfixes, small improvements
 // | |___ non-api changes
 // | ____ api changes
-val Octogato = "1.0.2"
+val Octogato = "1.0.3"
 
 val Scala = "3.1.0"
 val DockerImage = "bellsoft/liberica-openjre-alpine:17.0.1"
@@ -15,32 +13,9 @@ lazy val root = project.in(file("."))
     name := "Octogato",
     version := Octogato,
     scalaVersion := Scala,
-
-    libraryDependencies ++= Seq(
-      CatsCore,
-      CatsEffect,
-
-      CirceCore,
-      CirceGeneric,
-      CirceParser,
-      CirceRefined,
-
-      SttpCore,
-      SttpCatsBackend,
-      SttpCirce,
-
-      Decline,
-      DeclineEffect,
-      DeclineRefined,
-
-      Refined,
-      RefinedCats,
-
-      Mouse,
-      OdinCore,
-      PureconfigCore,
-      LogbackClassic
-    ),
+    dockerBaseImage := DockerImage,
+    Compile / mainClass := Some("octogato.app.OctogatoCLIApp"),
+    libraryDependencies ++= Dependencies.libraries,
 
     // https://docs.scala-lang.org/scala3/guides/migration/options-lookup.html
     // https://docs.scala-lang.org/scala3/guides/migration/options-new.html
@@ -52,10 +27,7 @@ lazy val root = project.in(file("."))
       "-deprecation",
       "-language:strictEquality",
       "-Ykind-projector:underscores"
-    ),
-
-    Compile / mainClass := Some("octogato.app.OctogatoCLIApp"),
-    dockerBaseImage := DockerImage
+    )
   )
   .enablePlugins(
     JavaAppPackaging,
