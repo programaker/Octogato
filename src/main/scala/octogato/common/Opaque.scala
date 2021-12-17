@@ -17,7 +17,7 @@ import pureconfig.ConfigReader
   * }}}
   */
 transparent trait Opaque[T]:
-  opaque type OpaqueType = T
+  final opaque type OpaqueType = T
 
   inline def apply(t: T): OpaqueType = t
   def unapply(ot: OpaqueType): Some[T] = Some(ot)
