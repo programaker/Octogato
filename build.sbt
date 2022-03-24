@@ -4,7 +4,7 @@
 // | ____ api changes
 val Octogato = "1.0.3"
 
-val Scala = "3.1.0"
+val Scala = "3.1.1"
 val DockerImage = "bellsoft/liberica-openjre-alpine:17.0.1"
 
 lazy val root = project.in(file("."))
