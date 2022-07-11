@@ -29,14 +29,14 @@ object Dependencies {
 }
 
 private object Versions {
-  val CatsCore = "2.7.0"
-  val CatsEffect = "3.3.9"
-  val CirceCore = "0.14.1"
-  val Mouse = "1.0.10"
-  val Refined = "0.9.28"
+  val CatsCore = "2.8.0"
+  val CatsEffect = "3.3.13"
+  val CirceCore = "0.14.2"
+  val Mouse = "1.1.0"
+  val Refined = "0.10.1"
   val OdinCore = "0.13.0"
-  val SttpCore = "3.5.1"
+  val SttpCore = "3.6.2"
   val PureConfigCore = "0.17.1"
-  val Decline = "2.2.0"
+  val Decline = "2.3.0"
   val Logback = "1.2.11"
 }
