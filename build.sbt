@@ -2,7 +2,7 @@
 // | | |_ bugfixes, small improvements
 // | |___ non-api changes
 // | ____ api changes
-val Octogato = "1.0.5"
+val Octogato = "1.0.6"
 
 val Scala = "3.1.3"
 val DockerImage = "bellsoft/liberica-openjre-alpine:17.0.1"
