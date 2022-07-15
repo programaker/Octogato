@@ -8,7 +8,7 @@ import io.circe.Decoder
 import octogato.common.Accept
 import octogato.common.Token
 import sttp.client3.IsOption
-import sttp.client3.*
+import sttp.client3.Request
 import sttp.client3.circe.*
 import sttp.model.Header
 
