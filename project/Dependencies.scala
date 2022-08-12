@@ -20,7 +20,7 @@ object Dependencies {
 
     "eu.timepit" %% "refined" % Versions.Refined,
     "eu.timepit" %% "refined-cats" % Versions.Refined,
-    "eu.timepit" %% "refined-scalacheck" % Versions.Refined,
+    "eu.timepit" %% "refined-scalacheck" % Versions.Refined % Test,
 
     "org.typelevel" %% "mouse" % Versions.Mouse,
     "com.github.valskalla" %% "odin-core" % Versions.OdinCore,
