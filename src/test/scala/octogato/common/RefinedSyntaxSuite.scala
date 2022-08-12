@@ -5,6 +5,9 @@ import org.scalacheck.Prop.*
 import eu.timepit.refined.refineV as $refineV
 import eu.timepit.refined.numeric.Positive
 import cats.syntax.either.*
+import cats.data.Validated.Invalid
+import cats.data.Validated.Valid
+import cats.data.NonEmptyChain
 
 final class RefinedSyntaxSuite extends ScalaCheckSuite:
   import octogato.common.syntax.*
@@ -48,5 +51,17 @@ final class RefinedSyntaxSuite extends ScalaCheckSuite:
         intercept[IllegalArgumentException](n.refineU[Positive])
         true
       }
+    }
+  }
+
+  property("refineNec syntax") {
+    forAll { (n: Int) =>
+      val ref = n.refineNec[Positive]
+      val ref2 = $refineV[Positive](n)
+
+      (ref, ref2) match
+        case (Invalid(a), Left(b)) => assertEquals(a, NonEmptyChain.one(RefinementError(b)))
+        case (Valid(a), Right(b))  => assertEquals(a.value, b.value)
+        case (a, b)                => fail("Error in refineNec syntax", clues(a, b))
     }
   }
