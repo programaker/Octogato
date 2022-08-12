@@ -27,6 +27,7 @@ object Dependencies {
     "ch.qos.logback" % "logback-classic" % Versions.Logback,
 
     "org.scalameta" %% "munit" % Versions.MUnit % Test,
+    "org.scalameta" %% "munit-scalacheck" % Versions.MUnit % Test,
     "org.typelevel" %% "munit-cats-effect-3" % Versions.MUnitCatsEffect % Test
   )
 }
