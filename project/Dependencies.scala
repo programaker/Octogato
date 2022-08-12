@@ -24,7 +24,10 @@ object Dependencies {
     "org.typelevel" %% "mouse" % Versions.Mouse,
     "com.github.valskalla" %% "odin-core" % Versions.OdinCore,
     "com.github.pureconfig" %% "pureconfig-core" % Versions.PureConfigCore,
-    "ch.qos.logback" % "logback-classic" % Versions.Logback
+    "ch.qos.logback" % "logback-classic" % Versions.Logback,
+
+    "org.scalameta" %% "munit" % Versions.MUnit % Test,
+    "org.typelevel" %% "munit-cats-effect-3" % Versions.MUnitCatsEffect % Test
   )
 }
 
@@ -39,4 +42,6 @@ private object Versions {
   val PureConfigCore = "0.17.1"
   val Decline = "2.3.0"
   val Logback = "1.2.11"
+  val MUnit = "0.7.29"
+  val MUnitCatsEffect = "1.0.7"
 }
