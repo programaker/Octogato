@@ -11,7 +11,7 @@ object Dependencies {
     "io.circe" %% "circe-refined" % Versions.CirceCore,
 
     "com.softwaremill.sttp.client3" %% "core" % Versions.SttpCore,
-    "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % Versions.SttpCore,
+    "com.softwaremill.sttp.client3" %% "armeria-backend-cats" % Versions.SttpCore,
     "com.softwaremill.sttp.client3" %% "circe" % Versions.SttpCore,
 
     "com.monovore" %% "decline" % Versions.Decline,
@@ -34,16 +34,16 @@ object Dependencies {
 }
 
 private object Versions {
-  val CatsCore = "2.8.0"
-  val CatsEffect = "3.3.14"
+  val CatsCore = "2.9.0"
+  val CatsEffect = "3.4.0"
   val CirceCore = "0.14.3"
-  val Mouse = "1.1.0"
+  val Mouse = "1.2.1"
   val Refined = "0.10.1"
   val OdinCore = "0.13.0"
-  val SttpCore = "3.8.2"
-  val PureConfigCore = "0.17.1"
+  val SttpCore = "3.8.3"
+  val PureConfigCore = "0.17.2"
   val Decline = "2.3.1"
-  val Logback = "1.4.3"
-  val MUnit = "0.7.29"
+  val Logback = "1.4.4"
+  val MUnit = "1.0.0-M6"
   val MUnitCatsEffect = "1.0.7"
 }
