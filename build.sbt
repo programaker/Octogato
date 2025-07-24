@@ -2,9 +2,9 @@
 // | | |_ bugfixes, small improvements
 // | |___ non-api changes
 // | ____ api changes
-val Octogato = "1.0.11"
+val Octogato = "1.0.12"
 
-val Scala = "3.3.1"
+val Scala = "3.7.1"
 val DockerImage = "eclipse-temurin:19.0.1_10-jre-focal"
 
 lazy val root = project.in(file("."))

@@ -10,3 +10,4 @@ metals.sbt
 *.sc
 volumes
 .history
+.cursor
